@@ -1,3 +1,4 @@
+import json
 from utils.publisher import Producer
 from fetcher import DataFetcher
 import time
@@ -16,8 +17,10 @@ fetcher = DataFetcher()
 while True:
     df = fetcher.get_100_tweets()
     for idx, row in df.iterrows():
+        print("works")
+        message = json.dumps(row.to_dict(), default=str)
         if row['Antisemitic'] == 1:
-            producer.publish(row.to_json(), topic_1)
+            producer.publish(message, topic_1)
         else:
-            producer.publish(row.to_json(), topic_2)
+            producer.publish(message, topic_2)
     time.sleep(60)

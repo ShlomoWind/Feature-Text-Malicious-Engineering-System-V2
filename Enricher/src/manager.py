@@ -13,6 +13,11 @@ TOPIC_ENRICHED_NOT_ANTISEMITIC = "enriched_preprocessed_tweets_not_antisemitic"
 
 prod = Producer(SERVER_ADDRESS)
 
+def safe_load(msg):
+    if isinstance(msg, str):
+            return json.loads(msg)
+    return msg
+
 class Manager:
     def __init__(self):
         self.consumer_antisemitic = Consumer(TOPIC_PROCESSED_ANTISEMITIC,SERVER_ADDRESS)
@@ -23,14 +28,16 @@ class Manager:
             try:
                 messages_antisemitic = self.consumer_antisemitic.consume()
                 for msg in messages_antisemitic:
+                    msg = safe_load(msg)
                     enriched = DataEnricher(msg).enriched()
-                    prod.publish(json.dumps(enriched), TOPIC_ENRICHED_ANTISEMITIC)
+                    prod.publish(json.dumps(enriched, default=str), TOPIC_ENRICHED_ANTISEMITIC)
                     print(f"Published: {enriched}")
 
                 messages_not_antisemitic = self.consumer_not_antisemitic.consume()
                 for msg in messages_not_antisemitic:
+                    msg = safe_load(msg)
                     enriched = DataEnricher(msg).enriched()
-                    prod.publish(json.dumps(enriched), TOPIC_ENRICHED_NOT_ANTISEMITIC)
+                    prod.publish(json.dumps(enriched,default=str), TOPIC_ENRICHED_NOT_ANTISEMITIC)
                     print(f"Published: {enriched}")
 
                 time.sleep(0.5)
