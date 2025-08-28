@@ -1,8 +1,8 @@
 import json
 import time
 
-from Preprocessor.src.consumer import Consumer
-from Retriever.src.publisher import Producer
+from utils.consumer import Consumer
+from utils.publisher import Producer
 from Preprocessor.src.processor import Preprocessor
 
 SERVER_ADDRESS = "localhost:9092"

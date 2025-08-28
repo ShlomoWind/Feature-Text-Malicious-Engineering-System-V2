@@ -1,4 +1,4 @@
-from Retriever.src.publisher import Producer
+from utils.publisher import Producer
 from fetcher import DataFetcher
 import time
 import os
