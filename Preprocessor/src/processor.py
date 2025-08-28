@@ -18,7 +18,6 @@ class Preprocessor:
 
     def process(self):
         original_text = self.message_dict.get("text", "")
-
         cleaned = original_text.translate(str.maketrans('', '', string.punctuation))
         cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', cleaned)
         cleaned = ' '.join(cleaned.split())
@@ -26,5 +25,5 @@ class Preprocessor:
         cleaned = ' '.join([word for word in cleaned.split() if word not in STOP_WORDS])
         msg = nlp(cleaned)
         cleaned = ' '.join([token.lemma_ for token in msg])
-        self.message_dict['processed_text'] = cleaned
+        self.message_dict['clean_text'] = cleaned
         return self.message_dict

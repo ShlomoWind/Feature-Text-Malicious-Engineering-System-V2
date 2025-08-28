@@ -1,6 +1,6 @@
 from manager import Manager
 
-manger = Manager()
+manager = Manager()
 
 if __name__ == "__main__":
-    manger.run()
+    manager.run()

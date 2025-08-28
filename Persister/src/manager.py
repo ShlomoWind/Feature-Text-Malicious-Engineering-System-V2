@@ -1,3 +1,4 @@
+import json
 import time
 from utils.consumer import Consumer
 from connector import MongoConnector
@@ -24,11 +25,15 @@ class Manager:
             try:
                 messages_antisemitic = self.consumer_antisemitic.consume()
                 for msg in messages_antisemitic:
+                    if isinstance(msg, str):
+                        msg = json.loads(msg)
                     self.anti_conn.coll.insert_one(msg)
                     print(f"inserted to mongo: {msg}")
 
                 messages_not_antisemitic = self.consumer_not_antisemitic.consume()
                 for msg in messages_not_antisemitic:
+                    if isinstance(msg, str):
+                        msg = json.loads(msg)
                     self.not_anti_conn.coll.insert_one(msg)
                     print(f"inserted to mongo: {msg}")
 

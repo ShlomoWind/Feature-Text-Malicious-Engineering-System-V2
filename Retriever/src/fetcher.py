@@ -17,12 +17,15 @@ class DataFetcher:
         self.collection = self.db[coll_name]
         self.place_holder = 0
 
+    def stringify_doc(self, doc):
+        return {str(k): str(v) for k, v in doc.items()}
+
 # Fetches 100 tweets from the collection, skipping already fetched ones
     def get_100_tweets(self):
         data = list(self.collection.find().sort("CreateDate", 1).skip(self.place_holder).limit(100))
         data_list = []
         for doc in data:
-            doc['_id'] = str(doc['_id'])
+            doc = self.stringify_doc(doc)
             data_list.append(doc)
         df = pd.DataFrame(data_list)
         self.place_holder += 100

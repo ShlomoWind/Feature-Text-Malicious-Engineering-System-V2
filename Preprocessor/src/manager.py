@@ -24,17 +24,13 @@ class Manager:
             try:
                 messages_antisemitic = self.consumer_antisemitic.consume()
                 for msg in messages_antisemitic:
-                    print("Processing antisemitic message...")
                     processed = Preprocessor(msg).process()
                     producer.publish(json.dumps(processed), TOPIC_PROCESSED_ANTISEMITIC)
-                    print(f"Published: {processed}")
 
                 messages_not_antisemitic = self.consumer_not_antisemitic.consume()
                 for msg in messages_not_antisemitic:
-                    print("Processing non-antisemitic message...")
                     processed = Preprocessor(msg).process()
                     producer.publish(json.dumps(processed), TOPIC_PROCESSED_NOT_ANTISEMITIC)
-                    print(f"Published: {processed}")
 
                 time.sleep(0.5)
             except Exception as e:
